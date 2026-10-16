@@ -126,8 +126,9 @@
   }
   function cardHTML(c) {
     var cat = catByKey[c.cat];
-    var media = c.img
-      ? '<img src="' + esc(c.img) + '" alt="" loading="lazy" decoding="async" width="880" height="462">'
+    var srcs = [c.img, c.img2].filter(Boolean);
+    var media = srcs.length
+      ? '<img src="' + esc(srcs[0]) + '"' + (srcs[1] ? ' data-alt="' + esc(srcs[1]) + '"' : '') + ' alt="" loading="lazy" decoding="async" width="880" height="462">'
       : '<span class="card__fallback">' + esc(c.title) + '</span>';
     var meta = '';
     if (c.lecturer) meta += '<span>' + icon('i-user') + esc(c.lecturer) + '</span>';
@@ -149,16 +150,27 @@
       '</div>' +
     '</a>';
   }
+  /* Image fallback chain: webp -> png/jpg (data-alt) -> course title text */
+  function onImgError() {
+    var img = this;
+    var alt = img.getAttribute('data-alt');
+    if (alt) {
+      img.removeAttribute('data-alt');
+      img.src = alt;
+      return;
+    }
+    img.removeEventListener('error', onImgError);
+    var span = document.createElement('span');
+    span.className = 'card__fallback';
+    span.textContent = img.closest('.card').querySelector('.card__title').textContent;
+    img.replaceWith(span);
+  }
   function renderGrid() {
     var list = filtered();
     grid.innerHTML = list.map(cardHTML).join('');
     grid.querySelectorAll('img').forEach(function (img) {
-      img.addEventListener('error', function () {
-        var span = document.createElement('span');
-        span.className = 'card__fallback';
-        span.textContent = img.closest('.card').querySelector('.card__title').textContent;
-        img.replaceWith(span);
-      }, { once: true });
+      img.addEventListener('error', onImgError);
+      if (img.complete && !img.naturalWidth) onImgError.call(img);
     });
     empty.hidden = list.length > 0;
   }

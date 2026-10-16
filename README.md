@@ -20,6 +20,8 @@ assets/img/             ლოგოები და favicon
   - საბოლოო ფასი = `price - discount`, პროცენტი = `discount / price`
 - ბმულები: `training_details` ცხრილიდან `training_id` + `slug` -> `https://smartacademy.ge/trainings/{training_id}-{slug}`
 - სურათები და ლექტორები: smartacademy.ge-ს კურსების ბარათებიდან.
+  - `img` = webp ვერსია, `img2` = ორიგინალი png/jpg (კურსის გვერდის og:image).
+  - თუ webp ვერ ჩაიტვირთა, იტვირთება `img2`; თუ ისიც ვერა, ჩანს კურსის სახელი ტექსტად.
 - `start` - ჯგუფის დაწყების თარიღი; გვერდზე ჩანს მხოლოდ მომავალი თარიღი.
 
 კურსის დასამატებლად ან ფასის შესაცვლელად საკმარისია `assets/js/courses.js`-ის რედაქტირება. `cat` ველის მნიშვნელობები: `it`, `data`, `design`, `marketing`, `management`, `finance`, `hr`.
