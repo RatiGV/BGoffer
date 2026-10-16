@@ -29,7 +29,6 @@
   var search = $('search');
   var sort = $('sort');
   var empty = $('empty');
-  var resultCount = $('resultCount');
   function isUpcoming(iso) {
     if (!iso) return false;
     var today = new Date();
@@ -143,7 +142,7 @@
           '<div class="price">' +
             '<span class="price__old"><span class="visually-hidden">ძველი ფასი: </span>' + money(c.price) + ' ₾</span>' +
             '<span class="price__new"><span class="visually-hidden">ახალი ფასი: </span>' + money(c.final) + '<small>₾</small></span>' +
-            '<span class="price__save">დაზოგე ' + c.discount + ' ₾ (' + c.percent + '%)</span>' +
+            '<span class="price__save">დაზოგე ' + c.discount + ' ₾</span>' +
           '</div>' +
           '<span class="card__cta">დეტალურად ' + icon('i-arrow') + '</span>' +
         '</div>' +
@@ -162,7 +161,6 @@
       }, { once: true });
     });
     empty.hidden = list.length > 0;
-    resultCount.textContent = 'ნაჩვენებია ' + list.length + ' კურსი' + (state.cat !== 'all' ? ' - ' + catByKey[state.cat].name : '');
   }
   function setCat(key, scroll) {
     state.cat = key;
